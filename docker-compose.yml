@@ -4,7 +4,11 @@ services:
   app1:
     build: ./app1
     container_name: app1_container
+    # Configuração de restart policies (Diferencial)
     restart: always
+    # Injeta a porta como variável de ambiente (Diferencial)
+    environment:
+      - APP_PORT=5000
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000"]
       interval: 30s
@@ -15,6 +19,8 @@ services:
     build: ./app2
     container_name: app2_container
     restart: always
+    environment:
+      - APP_PORT=5001
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5001"]
       interval: 30s
@@ -24,8 +30,10 @@ services:
   nginx:
     build: ./nginx
     container_name: nginx_container
+    # Apenas a porta 80 é exposta
     ports:
       - "80:80"
+    # Garante que as aplicações subam antes do proxy
     depends_on:
       - app1
       - app2

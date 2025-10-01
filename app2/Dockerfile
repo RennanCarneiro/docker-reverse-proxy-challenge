@@ -13,6 +13,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 #Copia aplicação pro container
 COPY . .
 
+#cria um usuario não-root e muda o contexto para ele
+#previne que a aplicação rode com privbilegios de root
+RUN adduser -D appuser
+USER appuser
+
+
 #Expondo a porta que o servidor vai usar(como to usando flask vai ser a 50001, por causa que essa é app2)
 EXPOSE 5001
 
