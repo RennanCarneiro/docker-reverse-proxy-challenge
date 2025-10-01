@@ -15,7 +15,7 @@ COPY . .
 
 #cria um usuario não-root e muda o contexto para ele
 #previne que a aplicação rode com privbilegios de root
-RUN adduser -D appuser
+RUN useradd --no-create-home --shell /bin/false appuser
 USER appuser
 
 
