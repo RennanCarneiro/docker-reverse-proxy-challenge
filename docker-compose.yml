@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app1:
+    build: ./app1
+    container_name: app1_container
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  app2:
+    build: ./app2
+    container_name: app2_container
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    
+  nginx:
+    build: ./nginx
+    container_name: nginx_container
+    ports:
+      - "80:80"
+    depends_on:
+      - app1
+      - app2
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
